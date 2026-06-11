@@ -43,6 +43,7 @@ export default function Footer() {
             {[
               ["Adhésion du Terrier", "/adhesion"],
               ["Annuaire", "/annuaire"],
+              ["Messagerie", "/messagerie"],
               ["Projets", "/initiatives-projets"],
               ["Mentions légales", "/mentions-legales"],
               ["Contact", "/contact"],
