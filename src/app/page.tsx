@@ -89,8 +89,8 @@ const vieTerriers = [
 
 const tiers = [
   {
-    nom: "Promeneur",
-    emoji: "🚶",
+    nom: "Niglo Curieux",
+    emoji: "🦔",
     prix: "Gratuit",
     desc: "Découvre, explore et consulte librement.",
     items: [
@@ -100,11 +100,12 @@ const tiers = [
       "Consulter les ressources ouvertes",
     ],
     highlight: false,
+    cta: "Commencer →",
   },
   {
-    nom: "Habitant du Terrier",
+    nom: "Niglo Actif",
     emoji: "🏡",
-    prix: "2 €/mois",
+    prix: "3 €/mois",
     desc: "Participe, publie et contribue à la vie du Terrier.",
     items: [
       "Profil personnel",
@@ -115,20 +116,22 @@ const tiers = [
       "Contribuer aux sections",
     ],
     highlight: true,
+    cta: "Rejoindre →",
   },
   {
-    nom: "Bâtisseur du Terrier",
+    nom: "Niglo Référent",
     emoji: "🏗️",
     prix: "5 €/mois",
-    desc: "Construis Niglomode avec nous.",
+    desc: "Construis NigloMode avec nous.",
     items: [
       "Toutes les fonctionnalités",
       "Mise en avant des projets",
       "Création d'initiatives locales",
-      "Badge de soutien",
+      "Badge Référent",
       "Participation au développement",
     ],
     highlight: false,
+    cta: "Rejoindre →",
   },
 ];
 
@@ -175,6 +178,24 @@ export default function HomePage() {
               className="px-8 py-3 rounded-full font-medium text-base transition-colors hover:bg-white/10"
               style={{ border: "1px solid rgba(255,255,255,0.35)", color: "rgba(255,255,255,0.85)" }}>
               Découvrir les sections
+            </Link>
+          </div>
+
+          {/* Recherche Terrier */}
+          <div className="w-full max-w-md mt-2">
+            <p className="text-xs mb-2 font-semibold" style={{ color: "rgba(216,181,106,0.70)" }}>
+              🏡 Trouver mon Terrier
+            </p>
+            <Link href="/terriers"
+              className="flex items-center gap-2 px-4 py-3 rounded-2xl w-full text-left transition-opacity hover:opacity-90"
+              style={{ backgroundColor: "rgba(6,14,8,0.55)", border: "1px solid rgba(216,181,106,0.45)", backdropFilter: "blur(6px)" }}>
+              <span>📍</span>
+              <span className="text-sm flex-1" style={{ color: "rgba(245,239,216,0.55)" }}>
+                Ville, code postal ou département…
+              </span>
+              <span className="text-xs font-bold px-3 py-1 rounded-full" style={{ backgroundColor: "#D8B56A", color: "#1E3524" }}>
+                Chercher →
+              </span>
             </Link>
           </div>
         </div>
@@ -326,10 +347,13 @@ export default function HomePage() {
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {tiers.map((tier) => (
-              <div key={tier.nom} className="rounded-2xl p-6 text-left flex flex-col gap-4"
+              <Link key={tier.nom} href="/adhesion"
+                className="rounded-2xl p-6 text-left flex flex-col gap-4 transition-transform hover:-translate-y-1 hover:shadow-xl"
                 style={{
                   backgroundColor: tier.highlight ? "rgba(233,223,200,0.12)" : "rgba(255,255,255,0.05)",
                   border: tier.highlight ? "2px solid #D8B56A" : "1px solid rgba(255,255,255,0.12)",
+                  boxShadow: tier.highlight ? "0 0 30px rgba(216,181,106,0.15)" : "none",
+                  textDecoration: "none",
                 }}>
                 <div>
                   <p className="text-2xl mb-1">{tier.emoji}</p>
@@ -344,16 +368,15 @@ export default function HomePage() {
                     </li>
                   ))}
                 </ul>
-                <Link href="/inscription"
-                  className="mt-auto text-center py-2.5 rounded-full text-sm font-bold transition-opacity hover:opacity-90"
+                <span className="mt-auto text-center py-2.5 rounded-full text-sm font-bold"
                   style={{
                     backgroundColor: tier.highlight ? "#D8B56A" : "rgba(255,255,255,0.10)",
                     color: tier.highlight ? "#1E3524" : "rgba(255,255,255,0.85)",
                     border: tier.highlight ? "none" : "1px solid rgba(255,255,255,0.18)",
                   }}>
-                  {tier.prix === "Gratuit" ? "Commencer →" : "Rejoindre →"}
-                </Link>
-              </div>
+                  {tier.cta}
+                </span>
+              </Link>
             ))}
           </div>
         </div>
