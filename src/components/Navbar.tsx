@@ -6,19 +6,22 @@ import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 
 const sectionsLinks = [
-  { icon: "🤲", label: "Entraide",          href: "/entraide" },
-  { icon: "🛒", label: "Circuits Courts",   href: "/circuits-courts" },
-  { icon: "🌱", label: "Produire",          href: "/produire-cultiver" },
-  { icon: "♻️", label: "Les 3R",            href: "/reemploi-ressources" },
-  { icon: "🤝", label: "Initiatives",       href: "/initiatives-projets" },
-  { icon: "🛠️", label: "Savoir-faire",      href: "/savoir-faire-transmission" },
-  { icon: "📋", label: "Ressources Admin",  href: "/ressources-administratives" },
+  { icon: "🤲", label: "Entraide",                href: "/entraide" },
+  { icon: "🛒", label: "Circuits Courts",         href: "/circuits-courts" },
+  { icon: "🌱", label: "Produire",                href: "/produire-cultiver" },
+  { icon: "♻️", label: "Les 3R",                  href: "/reemploi-ressources" },
+  { icon: "🤝", label: "Initiatives",             href: "/initiatives-projets" },
+  { icon: "🛠️", label: "Savoir-faire",            href: "/savoir-faire-transmission" },
+  { icon: "📋", label: "Ressources Admin",        href: "/ressources-administratives" },
+  { icon: "🔧", label: "Réparer au lieu de jeter", href: "/reparer" },
+  { icon: "🎁", label: "Donner au lieu de jeter",  href: "/donner" },
 ];
 
 const allMobileLinks = [
   { label: "Accueil",   href: "/" },
   { label: "Terriers",  href: "/terriers" },
   { label: "Forum",     href: "/forum" },
+  { label: "Annuaire",  href: "/annuaire" },
   ...sectionsLinks.map((s) => ({ label: s.label, href: s.href })),
 ];
 
@@ -52,7 +55,7 @@ export default function Navbar() {
 
         {/* Liens desktop principal */}
         <div className="hidden lg:flex items-center gap-6 text-sm">
-          {[{ label: "Accueil", href: "/" }, { label: "Terriers", href: "/terriers" }, { label: "Forum", href: "/forum" }].map((s) => (
+          {[{ label: "Accueil", href: "/" }, { label: "Terriers", href: "/terriers" }, { label: "Forum", href: "/forum" }, { label: "Annuaire", href: "/annuaire" }].map((s) => (
             <Link key={s.href} href={s.href}
               className="transition-opacity hover:opacity-100"
               style={{ opacity: pathname === s.href ? 1 : 0.65, color: pathname === s.href ? "#D8B56A" : "white" }}>
