@@ -41,21 +41,22 @@ export default function ReparerPage() {
         style={{ background: "linear-gradient(160deg, #060e08 0%, #1E3524 50%, #0a1508 100%)" }}
         className="relative text-white overflow-hidden"
       >
-        <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(6,14,8,0.55) 0%, rgba(6,14,8,0.30) 50%, rgba(6,14,8,0.60) 100%)" }} />
+        <img src="/reparer-bg.png" alt="" className="w-full block" style={{ opacity: 0.62 }} />
+        <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(6,14,8,0.40) 0%, rgba(6,14,8,0.18) 50%, rgba(6,14,8,0.55) 100%)" }} />
         {lucioles.map((l, i) => (
           <div key={i} className="absolute rounded-full pointer-events-none"
             style={{ top: l.top, left: l.left, width: l.r * 2, height: l.r * 2, backgroundColor: "#D8B56A", boxShadow: `0 0 ${l.r * 3}px ${l.r * 2}px rgba(216,181,106,0.45)`, opacity: 0.7 }} />
         ))}
-        <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 py-24">
+        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-6 py-14">
           <div className="flex flex-col items-center gap-4 max-w-2xl">
-            <span style={{ fontSize: 52 }}>🔧</span>
-            <h1 style={{ fontSize: "clamp(1.9rem, 5vw, 2.9rem)", fontWeight: 900, letterSpacing: 2, color: "#ffffff", lineHeight: 1.2, textShadow: "0 2px 12px rgba(6,14,8,0.8)" }}>
-              RÉPARER PLUTÔT <span style={{ color: "#D8B56A" }}>QUE JETER</span>
+            <span style={{ fontSize: 48 }}>🔧</span>
+            <h1 style={{ fontSize: "clamp(1.8rem, 5vw, 3.5rem)", fontWeight: 900, letterSpacing: 4, color: "#D8B56A", textShadow: "0 2px 12px rgba(6,14,8,0.8)" }}>
+              RÉPARER PLUTÔT QUE JETER
             </h1>
-            <p style={{ color: "rgba(255,255,255,0.85)", fontSize: "0.85rem", letterSpacing: "0.2em", textTransform: "uppercase", fontWeight: 700 }}>
+            <p style={{ color: "rgba(255,255,255,0.85)", fontSize: "0.85rem", letterSpacing: "0.2em", textTransform: "uppercase", fontWeight: 700, textShadow: "0 1px 8px rgba(6,14,8,0.75)" }}>
               Guides · Astuces · Ateliers · Entraide
             </p>
-            <p style={{ color: "rgba(245,239,216,0.90)", lineHeight: 1.75, maxWidth: 500, fontWeight: 500 }}>
+            <p style={{ color: "rgba(245,239,216,0.90)", lineHeight: 1.75, maxWidth: 500, fontWeight: 500, textShadow: "0 1px 8px rgba(6,14,8,0.75)" }}>
               Avant de jeter, essaie de réparer. La communauté partage ses techniques, ses astuces et ses ateliers locaux.
             </p>
           </div>
@@ -64,7 +65,7 @@ export default function ReparerPage() {
           style={{ left: "50%", transform: "translateX(-50%)", backgroundColor: "rgba(6,14,8,0.45)", border: "1px solid rgba(216,181,106,0.45)", backdropFilter: "blur(4px)", whiteSpace: "nowrap" }}>
           <span style={{ fontSize: 22 }}>🦔</span>
           <p className="text-sm italic font-medium" style={{ color: "#F5EFD8" }}>
-            Dicton du Niglo : &ldquo;Un objet réparé vaut deux fois plus qu&apos;un objet neuf.&rdquo;
+            Dicton du Niglo : &ldquo;Chaque panne réparée est un savoir-faire validé.&rdquo;
           </p>
         </div>
       </section>
