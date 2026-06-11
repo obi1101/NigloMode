@@ -9,38 +9,14 @@ const lucioles = [
 ];
 
 const categories = [
-  {
-    icon: "🗣️", nom: "Discussion libre", desc: "Parle de tout, de rien, du Terrier et d'ailleurs.",
-    fils: 142, msgs: 2890, dernierMsg: "Il y a 5 min", tag: "Actif",
-  },
-  {
-    icon: "💡", nom: "Idées & Suggestions", desc: "Propose des améliorations pour NIGLOMODE ou ton Terrier.",
-    fils: 38, msgs: 512, dernierMsg: "Il y a 22 min", tag: "Populaire",
-  },
-  {
-    icon: "🆘", nom: "Coup de main urgent", desc: "Besoin d'aide rapidement ? La communauté répond vite.",
-    fils: 24, msgs: 310, dernierMsg: "Il y a 1h", tag: "Urgent",
-  },
-  {
-    icon: "🔧", nom: "Bricolage & Réparation", desc: "Conseils, questions techniques, retours d'expérience.",
-    fils: 87, msgs: 1240, dernierMsg: "Il y a 2h", tag: "",
-  },
-  {
-    icon: "🌱", nom: "Jardin & Potager", desc: "Partager les récoltes, les questions et les semences.",
-    fils: 65, msgs: 980, dernierMsg: "Il y a 3h", tag: "",
-  },
-  {
-    icon: "🍲", nom: "Cuisine & Recettes", desc: "Recettes, conserves, fermentation, anti-gaspi.",
-    fils: 113, msgs: 1760, dernierMsg: "Hier", tag: "",
-  },
-  {
-    icon: "📢", nom: "Annonces du Terrier", desc: "Événements, collectes, rendez-vous locaux.",
-    fils: 29, msgs: 445, dernierMsg: "Hier", tag: "",
-  },
-  {
-    icon: "🤔", nom: "Questions administratives", desc: "Aides, démarches, associations — entre nous.",
-    fils: 51, msgs: 730, dernierMsg: "Il y a 2 jours", tag: "",
-  },
+  { icon: "🗣️", nom: "Discussion libre",          slug: "discussion-libre",          desc: "Parle de tout, de rien, du Terrier et d'ailleurs.",       fils: 142, msgs: 2890, dernierMsg: "Il y a 5 min",    tag: "Actif" },
+  { icon: "💡", nom: "Idées & Suggestions",        slug: "idees-suggestions",         desc: "Propose des améliorations pour NIGLOMODE ou ton Terrier.", fils: 38,  msgs: 512,  dernierMsg: "Il y a 22 min",   tag: "Populaire" },
+  { icon: "🆘", nom: "Coup de main urgent",        slug: "coup-de-main-urgent",       desc: "Besoin d'aide rapidement ? La communauté répond vite.",    fils: 24,  msgs: 310,  dernierMsg: "Il y a 1h",      tag: "Urgent" },
+  { icon: "🔧", nom: "Bricolage & Réparation",     slug: "bricolage-reparation",      desc: "Conseils, questions techniques, retours d'expérience.",    fils: 87,  msgs: 1240, dernierMsg: "Il y a 2h",      tag: "" },
+  { icon: "🌱", nom: "Jardin & Potager",           slug: "jardin-potager",            desc: "Partager les récoltes, les questions et les semences.",    fils: 65,  msgs: 980,  dernierMsg: "Il y a 3h",      tag: "" },
+  { icon: "🍲", nom: "Cuisine & Recettes",         slug: "cuisine-recettes",          desc: "Recettes, conserves, fermentation, anti-gaspi.",           fils: 113, msgs: 1760, dernierMsg: "Hier",           tag: "" },
+  { icon: "📢", nom: "Annonces du Terrier",        slug: "annonces-terrier",          desc: "Événements, collectes, rendez-vous locaux.",               fils: 29,  msgs: 445,  dernierMsg: "Hier",           tag: "" },
+  { icon: "🤔", nom: "Questions administratives",  slug: "questions-administratives", desc: "Aides, démarches, associations — entre nous.",             fils: 51,  msgs: 730,  dernierMsg: "Il y a 2 jours", tag: "" },
 ];
 
 const tagColor: Record<string, { bg: string; text: string }> = {
@@ -121,8 +97,8 @@ export default function ForumPage() {
           </div>
           <div className="flex flex-col gap-3">
             {filtrees.map((c) => (
-              <div key={c.nom}
-                className="rounded-2xl px-5 py-4 flex items-center gap-4 cursor-pointer hover:shadow-md transition-shadow"
+              <Link key={c.nom} href={`/forum/${c.slug}`}
+                className="rounded-2xl px-5 py-4 flex items-center gap-4 hover:shadow-md transition-shadow"
                 style={{ backgroundColor: "#EDE4C4", border: "1px solid #C4B898" }}>
                 <span style={{ fontSize: 32, flexShrink: 0 }}>{c.icon}</span>
                 <div className="flex-1 min-w-0">
@@ -142,7 +118,8 @@ export default function ForumPage() {
                   <p className="text-xs opacity-50" style={{ color: "#1E3524" }}>{c.msgs} msgs</p>
                   <p className="text-xs mt-1" style={{ color: "#C4B898" }}>{c.dernierMsg}</p>
                 </div>
-              </div>
+                <span className="text-lg flex-shrink-0" style={{ color: "#C4B898" }}>›</span>
+              </Link>
             ))}
             {filtrees.length === 0 && (
               <p className="text-center py-10 text-sm" style={{ color: "#4F6B47" }}>

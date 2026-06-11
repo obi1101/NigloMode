@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const topLinks = [
   { label: "Accueil",  href: "/" },
   { label: "Terriers", href: "/terriers" },
+  { label: "Forum",    href: "/forum" },
 ];
 
 const sectionsLinks = [
@@ -20,20 +21,30 @@ const sectionsLinks = [
 ];
 
 const allMobileLinks = [
-  { label: "Accueil",                    href: "/" },
-  { label: "Terriers",                   href: "/terriers" },
-  { label: "Entraide",                   href: "/entraide" },
-  { label: "Circuits Courts",            href: "/circuits-courts" },
-  { label: "Produire & Cultiver",        href: "/produire-cultiver" },
-  { label: "Les 3R du teRRieR",          href: "/reemploi-ressources" },
-  { label: "Initiatives & Projets",      href: "/initiatives-projets" },
-  { label: "Savoir-faire & Transmission",  href: "/savoir-faire-transmission" },
-  { label: "Ressources Administratives",   href: "/ressources-administratives" },
+  { label: "Accueil",                     href: "/" },
+  { label: "Terriers",                    href: "/terriers" },
+  { label: "Forum",                       href: "/forum" },
+  { label: "Entraide",                    href: "/entraide" },
+  { label: "Circuits Courts",             href: "/circuits-courts" },
+  { label: "Produire & Cultiver",         href: "/produire-cultiver" },
+  { label: "Les 3R du teRRieR",           href: "/reemploi-ressources" },
+  { label: "Initiatives & Projets",       href: "/initiatives-projets" },
+  { label: "Savoir-faire & Transmission", href: "/savoir-faire-transmission" },
+  { label: "Ressources Administratives",  href: "/ressources-administratives" },
 ];
 
 export default function Navbar() {
-  const [menuOpen, setMenuOpen]       = useState(false);
+  const [menuOpen, setMenuOpen]         = useState(false);
   const [sectionsOpen, setSectionsOpen] = useState(false);
+  const [loggedIn, setLoggedIn]         = useState(false);
+
+  useEffect(() => {
+    const stored = localStorage.getItem("niglomode_profil");
+    if (stored) {
+      const p = JSON.parse(stored);
+      setLoggedIn(!!(p.pseudo && p.ville));
+    }
+  }, []);
 
   return (
     <nav style={{ backgroundColor: "#09120a" }} className="text-white shadow-lg relative z-50">
@@ -58,28 +69,20 @@ export default function Navbar() {
 
           {/* Dropdown Sections */}
           <div className="relative">
-            <button
-              onClick={() => setSectionsOpen(!sectionsOpen)}
-              className="flex items-center gap-1.5 opacity-70 hover:opacity-100 transition-opacity text-sm"
-            >
+            <button onClick={() => setSectionsOpen(!sectionsOpen)}
+              className="flex items-center gap-1.5 opacity-70 hover:opacity-100 transition-opacity text-sm">
               Sections
               <span style={{ fontSize: 10, opacity: 0.7, marginTop: 1 }}>{sectionsOpen ? "▲" : "▼"}</span>
             </button>
             {sectionsOpen && (
               <>
                 <div className="fixed inset-0 z-40" onClick={() => setSectionsOpen(false)} />
-                <div
-                  className="absolute left-0 top-full mt-2 rounded-xl overflow-hidden z-50 min-w-[230px]"
-                  style={{ backgroundColor: "#0d1c10", border: "1px solid rgba(216,181,106,0.20)", boxShadow: "0 8px 32px rgba(0,0,0,0.5)" }}
-                >
+                <div className="absolute left-0 top-full mt-2 rounded-xl overflow-hidden z-50 min-w-[230px]"
+                  style={{ backgroundColor: "#0d1c10", border: "1px solid rgba(216,181,106,0.20)", boxShadow: "0 8px 32px rgba(0,0,0,0.5)" }}>
                   {sectionsLinks.map((s) => (
-                    <Link
-                      key={s.href}
-                      href={s.href}
-                      onClick={() => setSectionsOpen(false)}
+                    <Link key={s.href} href={s.href} onClick={() => setSectionsOpen(false)}
                       className="flex items-center gap-3 px-4 py-3 text-sm transition-colors hover:bg-white/5"
-                      style={{ color: "rgba(255,255,255,0.75)", borderBottom: "1px solid rgba(255,255,255,0.05)" }}
-                    >
+                      style={{ color: "rgba(255,255,255,0.75)", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
                       <span style={{ fontSize: 16 }}>{s.icon}</span>
                       <span>{s.label}</span>
                     </Link>
@@ -91,28 +94,34 @@ export default function Navbar() {
         </div>
 
         {/* Boutons desktop */}
-        <div className="hidden lg:flex items-center gap-3">
-          <Link
-            href="/messagerie"
-            className="text-sm px-4 py-1.5 rounded-full border transition-colors hover:border-white/60 flex items-center gap-1.5"
-            style={{ borderColor: "rgba(255,255,255,0.20)", color: "rgba(255,255,255,0.65)" }}
-          >
-            💬 Messages
-          </Link>
-          <Link
-            href="/profil"
-            className="text-sm px-4 py-1.5 rounded-full border transition-colors hover:border-white/60 flex items-center gap-1.5"
-            style={{ borderColor: "rgba(255,255,255,0.30)", color: "rgba(255,255,255,0.80)" }}
-          >
-            🦔 Mon profil
-          </Link>
-          <Link
-            href="/inscription"
-            className="text-sm px-5 py-1.5 rounded-full font-semibold transition-opacity hover:opacity-90"
-            style={{ backgroundColor: "#2D6A4F", color: "white" }}
-          >
-            Rejoindre le terrier
-          </Link>
+        <div className="hidden lg:flex items-center gap-2">
+          {loggedIn ? (
+            <>
+              <Link href="/messagerie"
+                className="text-sm px-4 py-1.5 rounded-full border transition-colors hover:border-white/60 flex items-center gap-1.5"
+                style={{ borderColor: "rgba(255,255,255,0.20)", color: "rgba(255,255,255,0.65)" }}>
+                💬 Messages
+              </Link>
+              <Link href="/profil"
+                className="text-sm px-4 py-1.5 rounded-full border transition-colors hover:border-white/60 flex items-center gap-1.5"
+                style={{ borderColor: "rgba(255,255,255,0.30)", color: "rgba(255,255,255,0.80)" }}>
+                🦔 Mon profil
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link href="/connexion"
+                className="text-sm px-4 py-1.5 rounded-full border transition-colors hover:border-white/60"
+                style={{ borderColor: "rgba(255,255,255,0.25)", color: "rgba(255,255,255,0.70)" }}>
+                Se connecter
+              </Link>
+              <Link href="/inscription"
+                className="text-sm px-5 py-1.5 rounded-full font-semibold transition-opacity hover:opacity-90"
+                style={{ backgroundColor: "#D8B56A", color: "#1E3524" }}>
+                Créer un compte
+              </Link>
+            </>
+          )}
         </div>
 
         {/* Burger mobile */}
@@ -132,16 +141,22 @@ export default function Navbar() {
             </Link>
           ))}
           <hr className="border-white/15" />
-          <Link href="/messagerie" className="opacity-70" onClick={() => setMenuOpen(false)}>💬 Messages</Link>
-          <Link href="/profil" className="opacity-70" onClick={() => setMenuOpen(false)}>🦔 Mon profil</Link>
-          <Link
-            href="/inscription"
-            className="px-4 py-2 rounded-full font-semibold text-center"
-            style={{ backgroundColor: "#2D6A4F", color: "white" }}
-            onClick={() => setMenuOpen(false)}
-          >
-            Rejoindre le terrier
-          </Link>
+          {loggedIn ? (
+            <>
+              <Link href="/messagerie" className="opacity-70" onClick={() => setMenuOpen(false)}>💬 Messages</Link>
+              <Link href="/profil" className="opacity-70" onClick={() => setMenuOpen(false)}>🦔 Mon profil</Link>
+            </>
+          ) : (
+            <>
+              <Link href="/connexion" className="opacity-70" onClick={() => setMenuOpen(false)}>Se connecter</Link>
+              <Link href="/inscription"
+                className="px-4 py-2 rounded-full font-semibold text-center"
+                style={{ backgroundColor: "#D8B56A", color: "#1E3524" }}
+                onClick={() => setMenuOpen(false)}>
+                Créer un compte
+              </Link>
+            </>
+          )}
         </div>
       )}
     </nav>
