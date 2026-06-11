@@ -74,7 +74,8 @@ const typeColors: Record<string, { bg: string; color: string }> = {
 export default function CircuitsCourtPage() {
   const [tab, setTab] = useState<Tab>("produits");
   const [mode, setMode] = useState<"tous" | "propose" | "cherche">("tous");
-  const [rayon, setRayon] = useState("20 km");
+  const [rayon, setRayon] = useState("");
+  const [cp, setCp]       = useState("");
   const [recherche, setRecherche] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [formType, setFormType] = useState<string>("Je propose");
@@ -86,6 +87,7 @@ export default function CircuitsCourtPage() {
     if (mode === "propose" && r.type === "Recherche") return false;
     if (mode === "cherche" && r.type !== "Recherche") return false;
     if (recherche && !r.titre.toLowerCase().includes(recherche.toLowerCase())) return false;
+    if (cp && !r.ville.toLowerCase().includes(cp.toLowerCase())) return false;
     return true;
   });
 
@@ -131,8 +133,37 @@ export default function CircuitsCourtPage() {
         </div>
       </section>
 
+      {/* ═══ RECHERCHE GÉO ═══ */}
+      <section style={{ background: "linear-gradient(160deg, #060e08 0%, #1E3524 50%, #0a1508 100%)" }} className="px-4 pt-8 pb-3">
+        <div className="max-w-3xl mx-auto flex flex-col gap-3">
+          <p className="text-center text-sm font-bold" style={{ color: "#D8B56A" }}>
+            🌿 Trouver des ressources locales près de chez moi
+          </p>
+          <div className="flex items-center gap-2 px-4 py-3 rounded-2xl"
+            style={{ backgroundColor: "#1a2e1c", border: "1px solid rgba(216,181,106,0.30)" }}>
+            <span>📍</span>
+            <input value={cp} onChange={e => setCp(e.target.value)}
+              placeholder="Ville, code postal ou département (ex : 69, Lyon, Rhône…)"
+              className="flex-1 bg-transparent outline-none text-sm"
+              style={{ color: "#F5EFD8" }} />
+            {cp && <button onClick={() => setCp("")} className="text-xs opacity-50 hover:opacity-100" style={{ color: "#F5EFD8" }}>✕</button>}
+          </div>
+          <div className="flex gap-2 flex-wrap">
+            {(["Autour de moi 📍", "Mon département", "Ma région", "Toute la France"] as const).map(label => (
+              <button key={label} onClick={() => setRayon(rayon === label ? "" : label)}
+                className="px-4 py-2 rounded-full text-xs font-semibold transition-all"
+                style={rayon === label
+                  ? { backgroundColor: "#D8B56A", color: "#1E3524" }
+                  : { backgroundColor: "rgba(255,255,255,0.07)", color: "rgba(245,239,216,0.75)", border: "1px solid rgba(255,255,255,0.15)" }}>
+                {label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ═══ ONGLETS ═══ */}
-      <section style={{ background: "linear-gradient(160deg, #060e08 0%, #1E3524 50%, #0a1508 100%)" }} className="px-4 pt-8 pb-6">
+      <section style={{ background: "linear-gradient(160deg, #060e08 0%, #1E3524 50%, #0a1508 100%)" }} className="px-4 pt-6 pb-6">
         <div className="max-w-5xl mx-auto grid grid-cols-2 sm:grid-cols-5 gap-3">
           {tabs.map((t) => (
             <button key={t.id} onClick={() => { setTab(t.id); }}

@@ -164,8 +164,26 @@ export default function RessourcesAdministrativesPage() {
         </div>
       </section>
 
+      {/* ═══ RECHERCHE RAPIDE ═══ */}
+      <section style={{ background: "linear-gradient(160deg, #060e08 0%, #1E3524 50%, #0a1508 100%)" }} className="px-4 pt-8 pb-3">
+        <div className="max-w-3xl mx-auto flex flex-col gap-2">
+          <p className="text-center text-sm font-bold" style={{ color: "#D8B56A" }}>
+            🔍 Chercher un document, un guide ou un formulaire
+          </p>
+          <div className="flex items-center gap-2 px-4 py-3 rounded-2xl"
+            style={{ backgroundColor: "#1a2e1c", border: "1px solid rgba(216,181,106,0.30)" }}>
+            <span>🔍</span>
+            <input value={recherche} onChange={e => { setRecherche(e.target.value); setFicheActive(null); }}
+              placeholder="Ex : statuts, subvention, cerfa, convocation, bénévoles…"
+              className="flex-1 bg-transparent outline-none text-sm"
+              style={{ color: "#F5EFD8" }} />
+            {recherche && <button onClick={() => setRecherche("")} className="text-xs opacity-50 hover:opacity-100" style={{ color: "#F5EFD8" }}>✕</button>}
+          </div>
+        </div>
+      </section>
+
       {/* ═══ ONGLETS ═══ */}
-      <section style={{ background: "linear-gradient(160deg, #060e08 0%, #1E3524 50%, #0a1508 100%)" }} className="px-4 pt-8 pb-6">
+      <section style={{ background: "linear-gradient(160deg, #060e08 0%, #1E3524 50%, #0a1508 100%)" }} className="px-4 pt-6 pb-6">
         <div className="max-w-5xl mx-auto grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
           {tabs.map((t) => (
             <button key={t.id} onClick={() => { setTab(t.id); setFicheActive(null); setRecherche(""); }}

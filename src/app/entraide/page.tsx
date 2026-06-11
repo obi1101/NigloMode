@@ -117,7 +117,8 @@ export default function EntraidePage() {
   const [tab, setTab] = useState<Tab>("besoin");
   const [subFiltre, setSubFiltre] = useState("");
   const [mode, setMode] = useState<"tous" | "demande" | "offre">("tous");
-  const [rayon, setRayon] = useState("20 km");
+  const [rayon, setRayon] = useState("");
+  const [cp,    setCp]    = useState("");
   const [recherche, setRecherche] = useState("");
   const [modeAujourdhui, setModeAujourdhui] = useState<null | "besoin" | "disponible">(null);
 
@@ -218,8 +219,32 @@ export default function EntraidePage() {
             </button>
           </div>
 
-          {/* Filtres */}
-          <div className="flex flex-wrap justify-center gap-3">
+          {/* Recherche géographique */}
+          <div className="flex flex-col gap-3 max-w-3xl mx-auto w-full">
+            <div className="flex items-center gap-2 px-4 py-3 rounded-2xl"
+              style={{ backgroundColor: "#1a2e1c", border: "1px solid rgba(216,181,106,0.30)" }}>
+              <span>📍</span>
+              <input value={cp} onChange={e => setCp(e.target.value)}
+                placeholder="Ta ville ou ton code postal (ex : 33, Bordeaux…)"
+                className="flex-1 bg-transparent outline-none text-sm"
+                style={{ color: "#F5EFD8" }} />
+              {cp && <button onClick={() => setCp("")} className="text-xs opacity-50 hover:opacity-100" style={{ color: "#F5EFD8" }}>✕</button>}
+            </div>
+            <div className="flex flex-wrap gap-2 justify-center">
+              {(["Autour de moi 📍", "Mon département", "Ma région", "Toute la France"] as const).map(label => (
+                <button key={label} onClick={() => setRayon(rayon === label ? "" : label)}
+                  className="px-4 py-2 rounded-full text-xs font-semibold transition-all"
+                  style={rayon === label
+                    ? { backgroundColor: "#D8B56A", color: "#1E3524" }
+                    : { backgroundColor: "rgba(255,255,255,0.07)", color: "rgba(245,239,216,0.75)", border: "1px solid rgba(255,255,255,0.15)" }}>
+                  {label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Filtres type */}
+          <div className="flex justify-center">
             <div className="flex rounded-full overflow-hidden"
               style={{ border: "1px solid rgba(216,181,106,0.45)", backgroundColor: "rgba(6,14,8,0.55)", backdropFilter: "blur(4px)" }}>
               {[
@@ -233,16 +258,6 @@ export default function EntraidePage() {
                   {m.label}
                 </button>
               ))}
-            </div>
-            <div className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold"
-              style={{ backgroundColor: "rgba(6,14,8,0.55)", border: "1px solid rgba(216,181,106,0.45)", backdropFilter: "blur(4px)", color: "rgba(255,255,255,0.85)" }}>
-              <span>📏</span>
-              <select value={rayon} onChange={(e) => setRayon(e.target.value)}
-                className="bg-transparent text-white text-xs outline-none cursor-pointer">
-                {["5 km", "10 km", "20 km", "50 km", "100 km", "Toute la France"].map((r) => (
-                  <option key={r} value={r} style={{ color: "#1E3524" }}>{r}</option>
-                ))}
-              </select>
             </div>
           </div>
 
