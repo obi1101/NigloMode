@@ -2,6 +2,8 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 
+type Action = { id: number; texte: string; date: string };
+
 const badgesAll = [
   { emoji: "🛠", label: "Je sais faire", desc: "Compétences pratiques à partager" },
   { emoji: "🎁", label: "Je peux donner", desc: "Objets à offrir" },
@@ -45,13 +47,36 @@ const defaultProfil: Profil = {
 
 export default function ProfilPage() {
   const [profil, setProfil] = useState<Profil>(defaultProfil);
-  const [saved, setSaved] = useState(false);
+  const [saved, setSaved]             = useState(false);
   const [editSection, setEditSection] = useState<string | null>(null);
+  const [onglet, setOnglet]           = useState<"profil" | "actions">("profil");
+  const [actions, setActions]         = useState<Action[]>([]);
+  const [newAction, setNewAction]     = useState("");
+  const [actionSent, setActionSent]   = useState(false);
 
   useEffect(() => {
     const stored = localStorage.getItem("niglomode_profil");
     if (stored) setProfil(JSON.parse(stored));
+    const storedActions = localStorage.getItem("niglomode_actions");
+    if (storedActions) setActions(JSON.parse(storedActions));
   }, []);
+
+  const ajouterAction = () => {
+    if (!newAction.trim()) return;
+    const a: Action = { id: Date.now(), texte: newAction.trim(), date: new Date().toLocaleDateString("fr-FR") };
+    const updated = [a, ...actions];
+    setActions(updated);
+    localStorage.setItem("niglomode_actions", JSON.stringify(updated));
+    setNewAction("");
+    setActionSent(true);
+    setTimeout(() => setActionSent(false), 2000);
+  };
+
+  const supprimerAction = (id: number) => {
+    const updated = actions.filter((a) => a.id !== id);
+    setActions(updated);
+    localStorage.setItem("niglomode_actions", JSON.stringify(updated));
+  };
 
   const save = (updated: Profil) => {
     localStorage.setItem("niglomode_profil", JSON.stringify(updated));
@@ -98,8 +123,83 @@ export default function ProfilPage() {
           </div>
         )}
 
-        {/* Profil existant */}
+        {/* Onglets */}
         {!isEmpty && (
+          <div className="flex gap-2 rounded-2xl p-1" style={{ backgroundColor: "rgba(0,0,0,0.2)", border: "1px solid rgba(196,184,152,0.2)" }}>
+            {([ ["profil", "🦔 Mon profil"], ["actions", "📸 Actions & Contributions"] ] as const).map(([key, label]) => (
+              <button key={key} onClick={() => setOnglet(key)}
+                className="flex-1 py-2 rounded-xl text-sm font-semibold transition-all"
+                style={{ backgroundColor: onglet === key ? "#D8B56A" : "transparent", color: onglet === key ? "#1E3524" : "rgba(245,239,216,0.55)" }}>
+                {label}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* ═══ ONGLET ACTIONS & CONTRIBUTIONS ═══ */}
+        {!isEmpty && onglet === "actions" && (
+          <>
+            <div className="rounded-2xl p-5 flex flex-col gap-4"
+              style={{ backgroundColor: "rgba(245,239,216,0.95)", border: "1px solid #C4B898" }}>
+              <div>
+                <h2 className="font-bold text-base" style={{ color: "#1E3524" }}>📸 Mes actions pour le Terrier</h2>
+                <p className="text-xs mt-0.5" style={{ color: "#6B4F34" }}>
+                  Flyer affiché, présentation à une asso, rencontre avec un artisan, distribution sur un marché…
+                  partage tes initiatives ici — elles inspirent les autres membres !
+                </p>
+              </div>
+              <div className="flex flex-col gap-2">
+                <textarea value={newAction} onChange={(e) => setNewAction(e.target.value)}
+                  placeholder="Ex : J'ai affiché un flyer à la boulangerie du village ce matin !"
+                  rows={2} className="px-3 py-2.5 rounded-xl text-sm outline-none resize-none"
+                  style={{ border: "1.5px solid #C4B898", backgroundColor: "#EDE4C4", color: "#1E3524" }} />
+                <button onClick={ajouterAction} disabled={!newAction.trim()}
+                  className="self-end px-5 py-2 rounded-xl text-sm font-bold transition-opacity disabled:opacity-35"
+                  style={{ backgroundColor: "#1E3524", color: "#D8B56A" }}>
+                  {actionSent ? "✓ Ajouté !" : "Publier"}
+                </button>
+              </div>
+              <p className="text-xs" style={{ color: "#C4B898" }}>Exemples : flyer affiché · affiche installée · présentation à une association · distribution sur un marché · rencontre avec un maraîcher</p>
+            </div>
+
+            {actions.length === 0 ? (
+              <div className="text-center py-8 flex flex-col items-center gap-2"
+                style={{ color: "rgba(245,239,216,0.4)" }}>
+                <span style={{ fontSize: 36 }}>🌱</span>
+                <p className="text-sm">Aucune action publiée pour l&apos;instant.</p>
+                <p className="text-xs">Chaque geste compte — même le plus petit !</p>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-3">
+                {actions.map((a) => (
+                  <div key={a.id} className="rounded-2xl px-5 py-4 flex items-start gap-3"
+                    style={{ backgroundColor: "rgba(245,239,216,0.95)", border: "1px solid #C4B898" }}>
+                    <span style={{ fontSize: 20 }}>📸</span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm" style={{ color: "#1E3524" }}>{a.texte}</p>
+                      <p className="text-xs mt-1" style={{ color: "#C4B898" }}>{a.date}</p>
+                    </div>
+                    <button onClick={() => supprimerAction(a.id)} className="text-xs flex-shrink-0"
+                      style={{ color: "#C4B898" }}>✕</button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <Link href="/adhesion"
+              className="rounded-xl p-4 flex items-center gap-3 transition-opacity hover:opacity-90"
+              style={{ backgroundColor: "#1E3524", border: "1px solid rgba(216,181,106,0.3)" }}>
+              <span style={{ fontSize: 22 }}>📢</span>
+              <div>
+                <p className="font-bold text-sm" style={{ color: "#D8B56A" }}>Faire connaître le Terrier</p>
+                <p className="text-xs" style={{ color: "rgba(245,239,216,0.55)" }}>Télécharge flyers, affiches et supports de communication</p>
+              </div>
+            </Link>
+          </>
+        )}
+
+        {/* Profil existant */}
+        {!isEmpty && onglet === "profil" && (
           <>
             {/* Avatar + identité */}
             <div className="rounded-2xl p-6 flex items-center gap-5"
