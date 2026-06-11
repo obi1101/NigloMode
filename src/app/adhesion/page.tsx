@@ -104,7 +104,7 @@ export default function AdhesionPage() {
             <div className="text-center">
               <p style={{ fontSize: 36 }}>🦔</p>
               <h2 className="font-extrabold text-lg mt-1" style={{ color: "#F5EFD8" }}>Niglo Actif</h2>
-              <p className="font-black text-2xl mt-0.5" style={{ color: "#D8B56A" }}>2 € / mois</p>
+              <p className="font-black text-2xl mt-0.5" style={{ color: "#D8B56A" }}>3 € / mois</p>
               <p className="text-xs mt-1" style={{ color: "rgba(245,239,216,0.6)" }}>Contribuer à enrichir le Terrier et faire grandir le réseau.</p>
             </div>
             <ul className="flex flex-col gap-1.5 text-xs flex-1">

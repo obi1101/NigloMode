@@ -16,19 +16,20 @@ const themes = [
   { icon: "💻", label: "Numérique" },
 ];
 
-const membres = [
-  { emoji: "🍓", nom: "Les Fraises de Marguerite", cat: "Producteurs", cp: "77", lieu: "Seine-et-Marne", desc: "Maraîchère bio, vente directe de fruits rouges et légumes de saison. Paniers hebdomadaires.", contact: "fraises-marguerite.fr" },
-  { emoji: "🔨", nom: "Atelier Bois Vivant", cat: "Artisans", cp: "34", lieu: "Montpellier", desc: "Menuisier-ébéniste, restauration de meubles et fabrication sur mesure en bois massif local.", contact: "Sur le forum" },
-  { emoji: "🧵", nom: "Couture Collective", cat: "Associations", cp: "69", lieu: "Lyon", desc: "Atelier de couture communautaire, cours gratuits les mercredis soirs. Machines à dispo.", contact: "couture-collective@niglo.fr" },
-  { emoji: "🌿", nom: "Herboristerie du Terrier", cat: "Commerce local", cp: "38", lieu: "Grenoble", desc: "Plantes médicinales, tisanes, huiles essentielles — tout vient de producteurs locaux certifiés.", contact: "herboterrier.com" },
-  { emoji: "🔧", nom: "Repair Café du 12e", cat: "Associations", cp: "75", lieu: "Paris 12e", desc: "Atelier bénévole de réparation d'objets du quotidien. 2e samedi du mois, 10h-17h.", contact: "Sur le forum" },
-  { emoji: "🐓", nom: "Ferme des Deux Chênes", cat: "Producteurs", cp: "14", lieu: "Normandie", desc: "Élevage plein air, œufs et volailles. Vente directe à la ferme et livraison dans les Terriers.", contact: "ferme2chenes.fr" },
-  { emoji: "🎨", nom: "Studio Partage Créatif", cat: "Services", cp: "33", lieu: "Bordeaux", desc: "Espace mutualisé : imprimante 3D, découpe laser, outils numériques. Accès libre membres Niglo Actif.", contact: "studio-partage.fr" },
-  { emoji: "🚴", nom: "Vélos en Commun", cat: "Associations", cp: "44", lieu: "Nantes", desc: "Réparation collective de vélos, banque de pièces détachées, cours d'entretien pour tous.", contact: "velosencommun.org" },
-  { emoji: "🍞", nom: "Boulangerie Au Pain Levain", cat: "Commerce local", cp: "35", lieu: "Rennes", desc: "Boulangerie artisanale, farines locales, pain au levain naturel. Réservation via NIGLOMODE.", contact: "aupainlevain.fr" },
-  { emoji: "🪵", nom: "Bois & Ressources", cat: "Réparation", cp: "63", lieu: "Clermont-Ferrand", desc: "Bois de récupération, palettes, chutes d'ateliers. Gratuit pour les membres du Terrier.", contact: "Sur le forum" },
-  { emoji: "🖥️", nom: "InfoLibre Asso", cat: "Numérique", cp: "31", lieu: "Toulouse", desc: "Aide informatique bénévole, ateliers logiciels libres, réparation PC et smartphones.", contact: "infolibre@niglo.fr" },
-  { emoji: "🌾", nom: "AMAP du Vallon", cat: "Agriculture", cp: "84", lieu: "Vaucluse", desc: "Association pour le maintien d'une agriculture paysanne. Paniers mensuels, visite de la ferme.", contact: "amap-vallon.fr" },
+type StatutMembre = "particulier" | "professionnel" | "association";
+const membres: { emoji: string; nom: string; cat: string; cp: string; lieu: string; desc: string; contact: string; statut: StatutMembre }[] = [
+  { emoji: "🍓", nom: "Les Fraises de Marguerite", cat: "Producteurs",    cp: "77", lieu: "Seine-et-Marne",    statut: "professionnel", desc: "Maraîchère bio, vente directe de fruits rouges et légumes de saison. Paniers hebdomadaires.", contact: "fraises-marguerite.fr" },
+  { emoji: "🔨", nom: "Atelier Bois Vivant",        cat: "Artisans",      cp: "34", lieu: "Montpellier",       statut: "professionnel", desc: "Menuisier-ébéniste, restauration de meubles et fabrication sur mesure en bois massif local.", contact: "Sur le forum" },
+  { emoji: "🧵", nom: "Couture Collective",          cat: "Associations",  cp: "69", lieu: "Lyon",              statut: "association",   desc: "Atelier de couture communautaire, cours gratuits les mercredis soirs. Machines à dispo.", contact: "couture-collective@niglo.fr" },
+  { emoji: "🌿", nom: "Herboristerie du Terrier",    cat: "Commerce local",cp: "38", lieu: "Grenoble",          statut: "professionnel", desc: "Plantes médicinales, tisanes, huiles essentielles — tout vient de producteurs locaux certifiés.", contact: "herboterrier.com" },
+  { emoji: "🔧", nom: "Repair Café du 12e",          cat: "Associations",  cp: "75", lieu: "Paris 12e",         statut: "association",   desc: "Atelier bénévole de réparation d'objets du quotidien. 2e samedi du mois, 10h-17h.", contact: "Sur le forum" },
+  { emoji: "🐓", nom: "Ferme des Deux Chênes",       cat: "Producteurs",   cp: "14", lieu: "Normandie",         statut: "professionnel", desc: "Élevage plein air, œufs et volailles. Vente directe à la ferme et livraison dans les Terriers.", contact: "ferme2chenes.fr" },
+  { emoji: "🎨", nom: "Studio Partage Créatif",      cat: "Services",      cp: "33", lieu: "Bordeaux",          statut: "professionnel", desc: "Espace mutualisé : imprimante 3D, découpe laser, outils numériques. Accès libre membres Niglo Actif.", contact: "studio-partage.fr" },
+  { emoji: "🚴", nom: "Vélos en Commun",             cat: "Associations",  cp: "44", lieu: "Nantes",            statut: "association",   desc: "Réparation collective de vélos, banque de pièces détachées, cours d'entretien pour tous.", contact: "velosencommun.org" },
+  { emoji: "🍞", nom: "Boulangerie Au Pain Levain",  cat: "Commerce local",cp: "35", lieu: "Rennes",            statut: "professionnel", desc: "Boulangerie artisanale, farines locales, pain au levain naturel. Réservation via NIGLOMODE.", contact: "aupainlevain.fr" },
+  { emoji: "🪵", nom: "Bois & Ressources",           cat: "Réparation",    cp: "63", lieu: "Clermont-Ferrand", statut: "particulier",   desc: "Bois de récupération, palettes, chutes d'ateliers. Gratuit pour les membres du Terrier.", contact: "Sur le forum" },
+  { emoji: "🖥️", nom: "InfoLibre Asso",             cat: "Numérique",     cp: "31", lieu: "Toulouse",          statut: "association",   desc: "Aide informatique bénévole, ateliers logiciels libres, réparation PC et smartphones.", contact: "infolibre@niglo.fr" },
+  { emoji: "🌾", nom: "AMAP du Vallon",              cat: "Agriculture",   cp: "84", lieu: "Vaucluse",          statut: "association",   desc: "Association pour le maintien d'une agriculture paysanne. Paniers mensuels, visite de la ferme.", contact: "amap-vallon.fr" },
 ];
 
 const lucioles = Array.from({ length: 8 }, (_, i) => ({
@@ -184,9 +185,11 @@ export default function AnnuairePage() {
                     <span style={{ fontSize: 30, flexShrink: 0 }}>{m.emoji}</span>
                     <div className="flex-1 min-w-0">
                       <p className="font-bold text-sm leading-tight" style={{ color: "#1E3524" }}>{m.nom}</p>
-                      <div className="flex gap-2 mt-1 flex-wrap">
+                      <div className="flex gap-2 mt-1 flex-wrap items-center">
                         <span className="px-2 py-0.5 rounded-full text-xs font-semibold" style={{ backgroundColor: "rgba(79,107,71,0.12)", color: "#4F6B47", border: "1px solid #C4B898" }}>{m.cat}</span>
                         <span className="text-xs" style={{ color: "#6B4F34" }}>📍 {m.lieu}</span>
+                        {m.statut === "professionnel" && <span className="px-1.5 py-0.5 rounded text-xs font-bold" style={{ backgroundColor: "rgba(30,53,36,0.08)", color: "#1E3524", border: "1px solid #C4B898" }}>🏷️ PRO</span>}
+                        {m.statut === "association" && <span className="px-1.5 py-0.5 rounded text-xs font-bold" style={{ backgroundColor: "rgba(79,107,71,0.08)", color: "#4F6B47", border: "1px solid #C4B898" }}>🤝 Asso</span>}
                       </div>
                     </div>
                   </div>
