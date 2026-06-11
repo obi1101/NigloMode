@@ -21,29 +21,26 @@ const competencesAll = [
 ];
 
 const contrepartieOptions = [
-  "Coup de main en retour",
-  "Troc d'objet",
-  "Partage de savoir-faire",
-  "Don libre",
-  "Participation financière",
-  "Hébergement temporaire",
-  "Prêt de matériel",
-  "Repas ou moment convivial",
-  "À discuter ensemble",
+  "Coup de main en retour", "Troc d'objet", "Partage de savoir-faire",
+  "Don libre", "Participation financière", "Hébergement temporaire",
+  "Prêt de matériel", "Repas ou moment convivial", "À discuter ensemble",
 ];
 
+const lucioles = Array.from({ length: 18 }, (_, i) => ({
+  id: i,
+  top: `${8 + Math.floor(((i * 37 + 11) % 80))}%`,
+  left: `${5 + Math.floor(((i * 53 + 7) % 88))}%`,
+  size: 3 + (i % 3),
+  opacity: 0.25 + (i % 4) * 0.12,
+}));
+
 type Profil = {
-  pseudo: string;
-  ville: string;
-  email: string;
-  badges: string[];
-  competences: string[];
-  contreparties: string[];
+  pseudo: string; ville: string; email: string;
+  badges: string[]; competences: string[]; contreparties: string[];
 };
 
 const defaultProfil: Profil = {
-  pseudo: "", ville: "", email: "",
-  badges: [], competences: [], contreparties: [],
+  pseudo: "", ville: "", email: "", badges: [], competences: [], contreparties: [],
 };
 
 export default function ProfilPage() {
@@ -65,75 +62,89 @@ export default function ProfilPage() {
 
   const toggle = (field: keyof Profil, val: string) => {
     const arr = profil[field] as string[];
-    const updated = { ...profil, [field]: arr.includes(val) ? arr.filter((v) => v !== val) : [...arr, val] };
-    save(updated);
+    save({ ...profil, [field]: arr.includes(val) ? arr.filter((v) => v !== val) : [...arr, val] });
   };
 
   const isEmpty = !profil.pseudo && !profil.ville;
 
   return (
-    <div style={{ backgroundColor: "var(--cream)", minHeight: "100vh" }} className="px-4 py-10">
-      <div className="max-w-2xl mx-auto flex flex-col gap-8">
+    <div style={{ background: "linear-gradient(160deg, #060e08 0%, #1E3524 50%, #0a1508 100%)", minHeight: "100vh" }} className="relative">
+      {/* Lucioles */}
+      {lucioles.map((l) => (
+        <div key={l.id} className="absolute rounded-full pointer-events-none"
+          style={{ top: l.top, left: l.left, width: l.size, height: l.size, backgroundColor: "#D8B56A", opacity: l.opacity, boxShadow: `0 0 ${l.size * 2}px #D8B56A` }} />
+      ))}
 
+      <div className="relative z-10 px-4 py-12 max-w-2xl mx-auto flex flex-col gap-6">
+
+        {/* En-tête */}
+        <div className="text-center mb-2">
+          <p className="text-xs tracking-widest uppercase mb-1" style={{ color: "rgba(216,181,106,0.6)" }}>NIGLOMODE</p>
+          <h1 className="text-2xl font-extrabold" style={{ color: "#F5EFD8" }}>Mon Profil</h1>
+        </div>
+
+        {/* Pas de profil */}
         {isEmpty && (
-          <div className="rounded-2xl p-6 text-center flex flex-col gap-4" style={{ backgroundColor: "#1A2562", color: "white" }}>
-            <span style={{ fontSize: 48 }}>🦔</span>
-            <p className="font-bold text-lg" style={{ color: "#F5C218" }}>Tu n&apos;as pas encore de profil</p>
-            <p className="text-sm opacity-70">Crée ton profil en 4 étapes pour rejoindre le Terrier.</p>
+          <div className="rounded-2xl p-8 text-center flex flex-col gap-4"
+            style={{ backgroundColor: "rgba(245,239,216,0.07)", border: "1px solid rgba(196,184,152,0.25)" }}>
+            <span style={{ fontSize: 52 }}>🦔</span>
+            <p className="font-bold text-lg" style={{ color: "#D8B56A" }}>Tu n&apos;as pas encore de profil</p>
+            <p className="text-sm" style={{ color: "rgba(245,239,216,0.65)" }}>Crée ton profil en 4 étapes pour rejoindre le Terrier.</p>
             <Link href="/inscription"
               className="mx-auto px-8 py-3 rounded-full font-bold text-sm transition-opacity hover:opacity-90"
-              style={{ backgroundColor: "#2D6A4F", color: "white" }}>
+              style={{ backgroundColor: "#D8B56A", color: "#1E3524" }}>
               Créer mon profil →
             </Link>
           </div>
         )}
 
+        {/* Profil existant */}
         {!isEmpty && (
           <>
-            {/* En-tête profil */}
-            <div className="rounded-2xl p-6 flex flex-col gap-4" style={{ backgroundColor: "white", border: "1px solid #e0d8c8" }}>
-              <div className="flex items-center gap-4">
-                <div className="w-16 h-16 rounded-full flex items-center justify-center font-bold text-xl text-white"
-                  style={{ backgroundColor: "#2D6A4F" }}>
-                  {profil.pseudo.slice(0, 2).toUpperCase()}
-                </div>
-                <div className="flex flex-col gap-0.5">
-                  <p className="font-extrabold text-xl" style={{ color: "#1A2562" }}>{profil.pseudo}</p>
-                  <p className="text-sm opacity-50" style={{ color: "#1A2562" }}>📍 {profil.ville}</p>
-                  {profil.badges.length > 0 && (
-                    <div className="flex gap-1 mt-1">
-                      {profil.badges.map((b) => (
-                        <span key={b} title={badgesAll.find((x) => x.emoji === b)?.label}
-                          className="w-7 h-7 rounded-full flex items-center justify-center text-base"
-                          style={{ backgroundColor: "#f0ede4", border: "1px solid #c8b88a" }}>
-                          {b}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-                <Link href="/inscription"
-                  className="ml-auto text-xs px-3 py-1.5 rounded-full border transition-colors hover:bg-black/5"
-                  style={{ borderColor: "#c8b88a", color: "#1A2562" }}>
-                  Recréer le profil
-                </Link>
+            {/* Avatar + identité */}
+            <div className="rounded-2xl p-6 flex items-center gap-5"
+              style={{ backgroundColor: "rgba(245,239,216,0.06)", border: "1px solid rgba(216,181,106,0.25)" }}>
+              <div className="w-16 h-16 rounded-full flex items-center justify-center font-extrabold text-xl flex-shrink-0"
+                style={{ backgroundColor: "#D8B56A", color: "#1E3524" }}>
+                {profil.pseudo.slice(0, 2).toUpperCase()}
               </div>
-
-              {saved && (
-                <div className="text-xs font-semibold px-3 py-1.5 rounded-full self-start"
-                  style={{ backgroundColor: "#EEF9F5", color: "#2D6A4F" }}>
-                  ✓ Modifications enregistrées
-                </div>
-              )}
+              <div className="flex-1 min-w-0">
+                <p className="font-extrabold text-xl truncate" style={{ color: "#F5EFD8" }}>{profil.pseudo}</p>
+                <p className="text-sm mt-0.5" style={{ color: "rgba(245,239,216,0.55)" }}>📍 {profil.ville}</p>
+                {profil.badges.length > 0 && (
+                  <div className="flex flex-wrap gap-1 mt-2">
+                    {profil.badges.map((b) => (
+                      <span key={b} title={badgesAll.find((x) => x.emoji === b)?.label}
+                        className="w-7 h-7 rounded-full flex items-center justify-center text-sm"
+                        style={{ backgroundColor: "rgba(216,181,106,0.15)", border: "1px solid rgba(216,181,106,0.35)" }}>
+                        {b}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <Link href="/inscription"
+                className="text-xs px-3 py-1.5 rounded-full border flex-shrink-0 transition-colors hover:bg-white/5"
+                style={{ borderColor: "rgba(196,184,152,0.35)", color: "rgba(245,239,216,0.55)" }}>
+                Recréer
+              </Link>
             </div>
 
+            {saved && (
+              <div className="text-xs font-semibold px-4 py-2 rounded-full self-start"
+                style={{ backgroundColor: "rgba(79,107,71,0.4)", color: "#D8B56A", border: "1px solid rgba(216,181,106,0.3)" }}>
+                ✓ Modifications enregistrées
+              </div>
+            )}
+
             {/* Infos de base */}
-            <section className="rounded-2xl p-6 flex flex-col gap-4" style={{ backgroundColor: "white", border: "1px solid #e0d8c8" }}>
+            <section className="rounded-2xl p-5 flex flex-col gap-4"
+              style={{ backgroundColor: "rgba(245,239,216,0.95)", border: "1px solid #C4B898" }}>
               <div className="flex items-center justify-between">
-                <h2 className="font-bold text-base" style={{ color: "#1A2562" }}>Mes informations</h2>
+                <h2 className="font-bold text-base" style={{ color: "#1E3524" }}>Mes informations</h2>
                 <button onClick={() => setEditSection(editSection === "infos" ? null : "infos")}
                   className="text-xs px-3 py-1 rounded-full border transition-colors hover:bg-black/5"
-                  style={{ borderColor: "#c8b88a", color: "#1A2562" }}>
+                  style={{ borderColor: "#C4B898", color: "#4F6B47" }}>
                   {editSection === "infos" ? "Fermer" : "Modifier"}
                 </button>
               </div>
@@ -145,19 +156,16 @@ export default function ProfilPage() {
                     { label: "Email", key: "email" as keyof Profil, type: "email" },
                   ].map((f) => (
                     <div key={f.key} className="flex flex-col gap-1">
-                      <label className="text-xs font-semibold" style={{ color: "#1A2562" }}>{f.label}</label>
-                      <input
-                        type={f.type}
-                        value={profil[f.key] as string}
+                      <label className="text-xs font-semibold" style={{ color: "#4F6B47" }}>{f.label}</label>
+                      <input type={f.type} value={profil[f.key] as string}
                         onChange={(e) => save({ ...profil, [f.key]: e.target.value })}
                         className="px-3 py-2 rounded-lg text-sm outline-none"
-                        style={{ border: "1.5px solid #e0d8c8", color: "#1A2562" }}
-                      />
+                        style={{ border: "1.5px solid #C4B898", backgroundColor: "#F5EFD8", color: "#1E3524" }} />
                     </div>
                   ))}
                 </div>
               ) : (
-                <div className="flex flex-col gap-1 text-sm opacity-70" style={{ color: "#1A2562" }}>
+                <div className="flex flex-col gap-1.5 text-sm" style={{ color: "#4F6B47" }}>
                   <span>👤 {profil.pseudo}</span>
                   <span>📍 {profil.ville}</span>
                   {profil.email && <span>✉️ {profil.email}</span>}
@@ -166,109 +174,106 @@ export default function ProfilPage() {
             </section>
 
             {/* Badges */}
-            <section className="rounded-2xl p-6 flex flex-col gap-4" style={{ backgroundColor: "white", border: "1px solid #e0d8c8" }}>
+            <section className="rounded-2xl p-5 flex flex-col gap-4"
+              style={{ backgroundColor: "rgba(245,239,216,0.95)", border: "1px solid #C4B898" }}>
               <div>
-                <h2 className="font-bold text-base" style={{ color: "#1A2562" }}>Mes badges</h2>
-                <p className="text-xs opacity-50 mt-0.5" style={{ color: "#1A2562" }}>
-                  Visibles sur ton profil, tes annonces et dans les résultats de recherche.
-                </p>
+                <h2 className="font-bold text-base" style={{ color: "#1E3524" }}>Mes badges</h2>
+                <p className="text-xs mt-0.5" style={{ color: "#6B4F34" }}>Visibles sur ton profil, tes annonces et dans les résultats.</p>
               </div>
               <div className="grid grid-cols-2 gap-2">
-                {badgesAll.map((b) => (
-                  <button
-                    key={b.emoji}
-                    type="button"
-                    onClick={() => toggle("badges", b.emoji)}
-                    className="flex items-center gap-3 p-3 rounded-xl text-left transition-all"
-                    style={{
-                      backgroundColor: profil.badges.includes(b.emoji) ? "#1A2562" : "#f8f5ef",
-                      color: profil.badges.includes(b.emoji) ? "white" : "#1A2562",
-                      border: `1.5px solid ${profil.badges.includes(b.emoji) ? "#1A2562" : "#e0d8c8"}`,
-                    }}
-                  >
-                    <span className="text-2xl">{b.emoji}</span>
-                    <div>
-                      <p className="text-xs font-bold">{b.label}</p>
-                      <p className="text-xs opacity-60 leading-tight">{b.desc}</p>
-                    </div>
-                  </button>
-                ))}
+                {badgesAll.map((b) => {
+                  const active = profil.badges.includes(b.emoji);
+                  return (
+                    <button key={b.emoji} type="button" onClick={() => toggle("badges", b.emoji)}
+                      className="flex items-center gap-3 p-3 rounded-xl text-left transition-all"
+                      style={{
+                        backgroundColor: active ? "#1E3524" : "#EDE4C4",
+                        border: `1.5px solid ${active ? "#D8B56A" : "#C4B898"}`,
+                      }}>
+                      <span className="text-xl">{b.emoji}</span>
+                      <div>
+                        <p className="text-xs font-bold" style={{ color: active ? "#D8B56A" : "#1E3524" }}>{b.label}</p>
+                        <p className="text-xs leading-tight" style={{ color: active ? "rgba(245,239,216,0.6)" : "#6B4F34" }}>{b.desc}</p>
+                      </div>
+                    </button>
+                  );
+                })}
               </div>
             </section>
 
             {/* Compétences */}
-            <section className="rounded-2xl p-6 flex flex-col gap-4" style={{ backgroundColor: "white", border: "1px solid #e0d8c8" }}>
+            <section className="rounded-2xl p-5 flex flex-col gap-4"
+              style={{ backgroundColor: "rgba(245,239,216,0.95)", border: "1px solid #C4B898" }}>
               <div>
-                <h2 className="font-bold text-base" style={{ color: "#1A2562" }}>Mes compétences</h2>
-                <p className="text-xs opacity-50 mt-0.5" style={{ color: "#1A2562" }}>
-                  Ce que tu sais faire et peux proposer dans tes annonces.
-                </p>
+                <h2 className="font-bold text-base" style={{ color: "#1E3524" }}>Mes compétences</h2>
+                <p className="text-xs mt-0.5" style={{ color: "#6B4F34" }}>Ce que tu sais faire et peux proposer dans tes annonces.</p>
               </div>
               <div className="flex flex-wrap gap-2">
-                {competencesAll.map((c) => (
-                  <button
-                    key={c}
-                    type="button"
-                    onClick={() => toggle("competences", c)}
-                    className="px-3 py-1.5 rounded-full text-xs font-semibold border transition-all"
-                    style={{
-                      backgroundColor: profil.competences.includes(c) ? "#2D6A4F" : "#f8f5ef",
-                      color: profil.competences.includes(c) ? "white" : "#1A2562",
-                      borderColor: profil.competences.includes(c) ? "#2D6A4F" : "#e0d8c8",
-                    }}
-                  >
-                    {c}
-                  </button>
-                ))}
+                {competencesAll.map((c) => {
+                  const active = profil.competences.includes(c);
+                  return (
+                    <button key={c} type="button" onClick={() => toggle("competences", c)}
+                      className="px-3 py-1.5 rounded-full text-xs font-semibold border transition-all"
+                      style={{
+                        backgroundColor: active ? "#4F6B47" : "#EDE4C4",
+                        color: active ? "#F5EFD8" : "#1E3524",
+                        borderColor: active ? "#4F6B47" : "#C4B898",
+                      }}>
+                      {c}
+                    </button>
+                  );
+                })}
               </div>
             </section>
 
-            {/* Contreparties par défaut */}
-            <section className="rounded-2xl p-6 flex flex-col gap-4" style={{ backgroundColor: "white", border: "1px solid #e0d8c8" }}>
+            {/* Contreparties */}
+            <section className="rounded-2xl p-5 flex flex-col gap-4"
+              style={{ backgroundColor: "rgba(245,239,216,0.95)", border: "1px solid #C4B898" }}>
               <div>
-                <h2 className="font-bold text-base" style={{ color: "#1A2562" }}>Mes contreparties habituelles</h2>
-                <p className="text-xs opacity-50 mt-0.5" style={{ color: "#1A2562" }}>
-                  Pré-remplies dans le formulaire d&apos;annonce — ajustables à chaque fois.
-                </p>
+                <h2 className="font-bold text-base" style={{ color: "#1E3524" }}>Mes contreparties habituelles</h2>
+                <p className="text-xs mt-0.5" style={{ color: "#6B4F34" }}>Pré-remplies dans le formulaire d&apos;annonce — ajustables à chaque fois.</p>
               </div>
               <div className="flex flex-wrap gap-2">
-                {contrepartieOptions.map((opt) => (
-                  <button
-                    key={opt}
-                    type="button"
-                    onClick={() => toggle("contreparties", opt)}
-                    className="px-3 py-1.5 rounded-full text-xs font-semibold border transition-all"
-                    style={{
-                      backgroundColor: profil.contreparties.includes(opt) ? "#F5C218" : "#f8f5ef",
-                      color: "#1A2562",
-                      borderColor: profil.contreparties.includes(opt) ? "#F5C218" : "#e0d8c8",
-                    }}
-                  >
-                    {opt}
-                  </button>
-                ))}
+                {contrepartieOptions.map((opt) => {
+                  const active = profil.contreparties.includes(opt);
+                  return (
+                    <button key={opt} type="button" onClick={() => toggle("contreparties", opt)}
+                      className="px-3 py-1.5 rounded-full text-xs font-semibold border transition-all"
+                      style={{
+                        backgroundColor: active ? "#D8B56A" : "#EDE4C4",
+                        color: "#1E3524",
+                        borderColor: active ? "#D8B56A" : "#C4B898",
+                      }}>
+                      {opt}
+                    </button>
+                  );
+                })}
               </div>
             </section>
 
-            {/* Lien vers Entraide */}
-            <div className="rounded-xl p-4 flex items-center justify-between" style={{ backgroundColor: "#EEF9F5", border: "1px solid #c8e6d8" }}>
-              <div>
-                <p className="font-semibold text-sm" style={{ color: "#2D6A4F" }}>Prêt à publier une annonce ?</p>
-                <p className="text-xs opacity-70 mt-0.5" style={{ color: "#1A2562" }}>
-                  Tes badges et contreparties se pré-remplissent automatiquement.
-                </p>
-              </div>
+            {/* Actions rapides */}
+            <div className="grid grid-cols-2 gap-3">
               <Link href="/entraide"
-                className="px-5 py-2 rounded-full font-bold text-xs transition-opacity hover:opacity-90 flex-shrink-0"
-                style={{ backgroundColor: "#2D6A4F", color: "white" }}>
-                Aller sur Entraide →
+                className="rounded-xl p-4 flex flex-col gap-1 transition-opacity hover:opacity-90"
+                style={{ backgroundColor: "#1E3524", border: "1px solid rgba(216,181,106,0.3)" }}>
+                <span style={{ fontSize: 22 }}>🤲</span>
+                <p className="font-bold text-sm" style={{ color: "#D8B56A" }}>Publier une annonce</p>
+                <p className="text-xs" style={{ color: "rgba(245,239,216,0.55)" }}>Entraide du Terrier</p>
+              </Link>
+              <Link href="/messagerie"
+                className="rounded-xl p-4 flex flex-col gap-1 transition-opacity hover:opacity-90"
+                style={{ backgroundColor: "#1E3524", border: "1px solid rgba(216,181,106,0.3)" }}>
+                <span style={{ fontSize: 22 }}>💬</span>
+                <p className="font-bold text-sm" style={{ color: "#D8B56A" }}>Mes messages</p>
+                <p className="text-xs" style={{ color: "rgba(245,239,216,0.55)" }}>Chat du Terrier</p>
               </Link>
             </div>
           </>
         )}
 
-        <div className="text-center">
-          <Link href="/" className="text-xs opacity-40 hover:opacity-70 transition-opacity" style={{ color: "#1A2562" }}>
+        <div className="text-center mt-2">
+          <Link href="/" className="text-xs transition-opacity hover:opacity-70"
+            style={{ color: "rgba(245,239,216,0.35)" }}>
             ← Retour à l&apos;accueil
           </Link>
         </div>

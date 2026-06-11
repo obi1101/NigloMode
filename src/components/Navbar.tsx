@@ -93,6 +93,13 @@ export default function Navbar() {
         {/* Boutons desktop */}
         <div className="hidden lg:flex items-center gap-3">
           <Link
+            href="/messagerie"
+            className="text-sm px-4 py-1.5 rounded-full border transition-colors hover:border-white/60 flex items-center gap-1.5"
+            style={{ borderColor: "rgba(255,255,255,0.20)", color: "rgba(255,255,255,0.65)" }}
+          >
+            💬 Messages
+          </Link>
+          <Link
             href="/profil"
             className="text-sm px-4 py-1.5 rounded-full border transition-colors hover:border-white/60 flex items-center gap-1.5"
             style={{ borderColor: "rgba(255,255,255,0.30)", color: "rgba(255,255,255,0.80)" }}
@@ -125,6 +132,7 @@ export default function Navbar() {
             </Link>
           ))}
           <hr className="border-white/15" />
+          <Link href="/messagerie" className="opacity-70" onClick={() => setMenuOpen(false)}>💬 Messages</Link>
           <Link href="/profil" className="opacity-70" onClick={() => setMenuOpen(false)}>🦔 Mon profil</Link>
           <Link
             href="/inscription"
