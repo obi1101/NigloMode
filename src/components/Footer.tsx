@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function Footer() {
   return (
     <footer style={{ backgroundColor: "#09120a", color: "rgba(255,255,255,0.60)" }} className="text-sm">
-      <div className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
 
         {/* Colonne 1 — À propos */}
         <div>
@@ -74,6 +74,22 @@ export default function Footer() {
               ["Adhésion au Terrier",  "/adhesion"],
               ["Contact",             "/contact"],
               ["Mentions légales",    "/mentions-legales"],
+            ].map(([label, href]) => (
+              <li key={href}>
+                <Link href={href} className="text-xs hover:text-white transition-colors">{label}</Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Colonne 5 — Professionnels */}
+        <div>
+          <h3 className="font-bold mb-3" style={{ color: "#D8B56A" }}>🏷️ Professionnels</h3>
+          <ul className="space-y-2">
+            {[
+              ["Espace Pro",               "/espace-pro"],
+              ["Référencer mon activité",  "/espace-pro#formulaire"],
+              ["Tarifs professionnels",    "/espace-pro#tarifs"],
             ].map(([label, href]) => (
               <li key={href}>
                 <Link href={href} className="text-xs hover:text-white transition-colors">{label}</Link>
