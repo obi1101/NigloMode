@@ -102,7 +102,7 @@ export default function Navbar() {
 
       {/* ── Barre secondaire sections (desktop) ── */}
       <div className="hidden lg:block border-t" style={{ borderColor: "rgba(216,181,106,0.12)", backgroundColor: "#0a1a0d" }}>
-        <div className="max-w-7xl mx-auto px-4 flex items-center gap-1">
+        <div className="max-w-7xl mx-auto px-4 flex items-center justify-center gap-1">
           {sectionsLinks.map((s) => {
             const active = pathname.startsWith(s.href);
             return (
