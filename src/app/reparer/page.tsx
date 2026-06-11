@@ -194,9 +194,10 @@ const diffColor = (d: Fiche["diff"]) =>
   : { bg: "#f8d7da", color: "#7d1a1a" };
 
 export default function ReparerPage() {
-  const [cat,       setCat]       = useState<CatId>("electro");
-  const [showForm,  setShowForm]  = useState(false);
-  const [formSent,  setFormSent]  = useState(false);
+  const [cat,        setCat]        = useState<CatId>("electro");
+  const [cp,         setCp]         = useState("");
+  const [showForm,   setShowForm]   = useState(false);
+  const [formSent,   setFormSent]   = useState(false);
   const [showRetour, setShowRetour] = useState(false);
   const [retourSent, setRetourSent] = useState(false);
 
@@ -237,8 +238,26 @@ export default function ReparerPage() {
         </div>
       </section>
 
+      {/* ═══ RECHERCHE ATELIER ═══ */}
+      <section style={{ background: "linear-gradient(160deg, #060e08 0%, #1E3524 50%, #0a1508 100%)" }} className="px-4 pt-8 pb-2">
+        <div className="max-w-3xl mx-auto flex flex-col gap-3">
+          <p className="text-center text-sm font-bold" style={{ color: "#D8B56A" }}>
+            🔧 Trouver un atelier ou un repair café près de chez moi
+          </p>
+          <div className="flex items-center gap-2 px-4 py-3 rounded-2xl"
+            style={{ backgroundColor: "#1a2e1c", border: "1px solid rgba(216,181,106,0.30)" }}>
+            <span>📍</span>
+            <input value={cp} onChange={e => setCp(e.target.value)}
+              placeholder="Ville, code postal ou département (ex : 34, Lyon…)"
+              className="flex-1 bg-transparent outline-none text-sm"
+              style={{ color: "#F5EFD8" }} />
+            {cp && <button onClick={() => setCp("")} className="text-xs opacity-50 hover:opacity-100" style={{ color: "#F5EFD8" }}>✕</button>}
+          </div>
+        </div>
+      </section>
+
       {/* ═══ FILTRES CATÉGORIES ═══ */}
-      <section style={{ background: "linear-gradient(160deg, #060e08 0%, #1E3524 50%, #0a1508 100%)" }} className="px-4 pt-8 pb-6">
+      <section style={{ background: "linear-gradient(160deg, #060e08 0%, #1E3524 50%, #0a1508 100%)" }} className="px-4 pt-6 pb-6">
         <div className="max-w-4xl mx-auto grid grid-cols-3 sm:grid-cols-6 gap-3">
           {CATS.map((c) => (
             <button key={c.id} onClick={() => setCat(c.id)}
