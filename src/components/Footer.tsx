@@ -22,7 +22,7 @@ export default function Footer() {
           <ul className="space-y-1.5">
             {[
               ["Entraide", "/entraide"],
-              ["Savoir-faire", "/savoir-faire"],
+              ["Savoir-faire", "/savoir-faire-transmission"],
               ["Réparer au lieu de jeter", "/reparer"],
               ["Donner au lieu de jeter", "/donner"],
               ["Circuits courts", "/circuits-courts"],
@@ -43,7 +43,7 @@ export default function Footer() {
             {[
               ["Adhésion du Terrier", "/adhesion"],
               ["Annuaire", "/annuaire"],
-              ["Projets", "/projets"],
+              ["Projets", "/initiatives-projets"],
               ["Mentions légales", "/mentions-legales"],
               ["Contact", "/contact"],
             ].map(([label, href]) => (
